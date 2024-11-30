@@ -11,35 +11,51 @@ import (
 type saver interface {
   Save() error
 }
-func saveData(data saver){
+
+/*type displayer interface {
+  Display()
+}*/
+
+type outputtable interface {
+  saver
+  Display()
+}
+
+func saveData(data saver) error {
   err := data.Save()
   if err != nil {
     fmt.Println("Saving data failed due to some reason")
-    return
+    return err
   }
   fmt.Println("Data saved successfully!")
+  return nil
+}
+
+func outputData(data outputtable) error {
+  data.Display()
+  return saveData(data)
 }
 
 func main() {
 	title, content := getNoteData()
   todoText := getUserInput("Enter your todo text: ")
-  todo, err := todo.New(todoText)
 
+  todo, err := todo.New(todoText)
   if err != nil {
     fmt.Println(err)
     return
   }
-
-  todo.Display()
-  saveData(todo)
+  err = outputData(todo)
+  if err != nil {
+    return
+  }
 
   userNote, err := note.New(title, content)
   if err != nil {
     fmt.Println(err)
     return
   }
-  userNote.Display()
-  saveData(userNote)
+  outputData(userNote)
 }
 
 func getUserInput(prompt string) string {
