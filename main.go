@@ -38,7 +38,16 @@ func outputData(data outputtable) error {
 }
 
 func printAnyValue(value interface{}) {
-	fmt.Println(value)
+  switch value.(type){
+    case int:
+    fmt.Println("Int: ", value)
+    case float64:
+    fmt.Println("Float64: ", value)
+    case string:
+      fmt.Print("String", value)
+    default:
+      fmt.Println("Default Case: ", value)
+  }
 }
 
 func main() {
@@ -50,6 +59,7 @@ func main() {
 	todoText := getUserInput("Enter your todo text: ")
 
 	todo, err := todo.New(todoText)
+  printAnyValue(todo)
 	if err != nil {
 		fmt.Println(err)
 		return
