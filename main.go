@@ -38,28 +38,45 @@ func outputData(data outputtable) error {
 }
 
 func printAnyValue(value interface{}) {
-  switch value.(type){
-    case int:
-    fmt.Println("Int: ", value)
-    case float64:
-    fmt.Println("Float64: ", value)
-    case string:
-      fmt.Print("String", value)
-    default:
-      fmt.Println("Default Case: ", value)
+  intVal, isInt := value.(int)
+  if isInt {
+    fmt.Println("Integer: ", intVal)
+    return
   }
+
+  float64Val, isFloat64 := value.(float64)
+  if isFloat64 {
+    fmt.Println("Float: ", float64Val)
+    return
+  }
+
+  stringVal, isString := value.(string)
+  if isString {
+    fmt.Println("String: ", stringVal)
+    return
+  }
+	/*switch value.(type) {
+	case int:
+		fmt.Println("Int: ", value)
+	case float64:
+		fmt.Println("Float64: ", value)
+	case string:
+		fmt.Print("String", value)
+	default:
+		fmt.Println("Default Case: ", value)
+	}*/
 }
 
 func main() {
-  printAnyValue(1)
-  printAnyValue(1.1)
-  printAnyValue("Hello")
+	printAnyValue(1)
+	printAnyValue(1.1)
+	printAnyValue("Hello")
 
 	title, content := getNoteData()
 	todoText := getUserInput("Enter your todo text: ")
 
 	todo, err := todo.New(todoText)
-  printAnyValue(todo)
+	printAnyValue(todo)
 	if err != nil {
 		fmt.Println(err)
 		return
