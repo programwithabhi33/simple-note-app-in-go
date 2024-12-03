@@ -67,7 +67,14 @@ func printAnyValue(value interface{}) {
 	}*/
 }
 
+func add[T int|float64|string](a, b T) T{
+  return a + b 
+}
+
 func main() {
+  result := add(4,5)
+  fmt.Println("Result + 1 is: ", result + 1)
+
 	printAnyValue(1)
 	printAnyValue(1.1)
 	printAnyValue("Hello")
